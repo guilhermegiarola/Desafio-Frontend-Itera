@@ -8,6 +8,7 @@ function formatCNPJ(value) {
 
 //To start the JSON server, the command is json-server.cmd --watch data.json
 $(document).ready(function () {
+	$('#myTable thead tr').append('<th/>');
 	$('#myTable').DataTable({
 		"processing": true,
 		"ajax": {
@@ -35,7 +36,12 @@ $(document).ready(function () {
 				const value = parseFloat(item.valorAcao);
 				if (!value) return 0;
 				//Colocando a máscara no valor da ação a ser exibido pela coluna.
-				return "R$ " + value.toLocaleString('pt-br', {minimumFractionDigits: 2});
+				return "R$ " + value.toLocaleString('pt-br', {minimumFractionDigits: 2})
+			}
+		}, {
+			"data": null,
+			render: function (data, type, row) {
+				return '<button class="removeButton">Remover</button>'
 			}
 		}]
 	});
@@ -50,5 +56,18 @@ $(function () {
 	$("input[name='numFuncionarios']").on('input', function (e) {
 		$(this).val($(this).val().replace(/[^0-9]/g, ''));
 	});
+
+	$("button[id='clearTable']").on('click', function () {
+		var table = $('#myTable').DataTable();
+		table.clear().draw();
+	});
 })
+
+//Removendo linha da tabela ao clicar no botão.
+$('#myTable').on('click', '.removeButton', function () {
+	var table = $('#myTable').DataTable();
+	table.row($(this).parents('tr')).remove().draw();
+});
+
+
 
