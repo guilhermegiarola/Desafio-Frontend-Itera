@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<div id="titleAdd" style="font-weight: 700">Adicionar nova Empresa</div><br/>
+		<form id="forms" class="form" style="width: 50%; margin: 16px 8px"> 
+			<div class="form-group" style="margin: 8px 0px">
+				<label for="inputName">Nome: </label>
+				<input type="text "id="inputName" name="inputName" required class="form-control" />
+			</div>
+			<div class="form-group" style="margin: 8px 0px">
+				<label for="inputName">CNPJ: </label>
+				<input type="text" id="inputCNPJ" name="inputCNPJ" required class="form-control" maxlength="18"/>
+			</div>
+			<div class="form-group" style="margin: 8px 0px">
+				<label for="inputName">Número de Funcionários: </label>
+				<input type="text "id="numFuncionarios" name="numFuncionarios" required class="form-control" />
+			</div>
+			<div class="form-group" style="margin: 8px 0px">
+				<label for="inputName">Data de Abertura: </label>
+				<input type="text "id="inputName" name="inputName" required class="form-control" />
+			</div>
+			<div class="form-group" style="margin: 8px 0px">
+				<label for="inputName">Valor da Ação: </label>
+				<input type="text "id="inputName" name="inputName" required class="form-control" />
+			</div>
+			<div>
+				<input type="submit" class="btn btn-success" value="Enviar" />
+			</div>
+		</form>
+		<table id="myTable" class="display nowrap" style="width:100%">
+			<thead>
+				<tr>
+					<th>Nome da empresa</th>
+					<th>CNPJ</th>
+					<th>Número de funcionários</th>
+					<th>Data de abertura</th>
+					<th>Valor da ação</th>
+				</tr>
+			</thead>
+		</table>
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.js"></script>
+	<script src="./custom.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.css" />
+</html>

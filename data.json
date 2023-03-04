@@ -1,0 +1,18 @@
+{
+	"companies": [
+		{
+			"name":"Gui-Gui Papelaria",
+			"cnpj":"00000000000000",
+			"numFunc":"4",
+			"dataAbertura":"18/10/1996",
+			"valorAcao":"10.00"
+		},
+		{
+			"name":"Gi-Gi Papelaria",
+			"cnpj":"03030303203102",
+			"numFunc":"9",
+			"dataAbertura":"08/10/1999",
+			"valorAcao":"100.00"
+		}
+	]	
+}
