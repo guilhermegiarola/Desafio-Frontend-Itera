@@ -2,31 +2,29 @@
 <html>
 	<body>
 		<div id="titleAdd" style="font-weight: 700">Adicionar nova Empresa</div><br/>
-		<form id="forms" class="form" style="width: 50%; margin: 16px 8px"> 
-			<div class="form-group" style="margin: 8px 0px">
-				<label for="inputName">Nome: </label>
-				<input type="text "id="inputName" name="inputName" required class="form-control" />
-			</div>
-			<div class="form-group" style="margin: 8px 0px">
-				<label for="inputName">CNPJ: </label>
-				<input type="text" id="inputCNPJ" name="inputCNPJ" required class="form-control" maxlength="18"/>
-			</div>
-			<div class="form-group" style="margin: 8px 0px">
-				<label for="inputName">Número de Funcionários: </label>
-				<input type="text "id="numFuncionarios" name="numFuncionarios" required class="form-control" />
-			</div>
-			<div class="form-group" style="margin: 8px 0px">
-				<label for="inputName">Data de Abertura: </label>
-				<input type="text "id="inputName" name="inputName" required class="form-control" />
-			</div>
-			<div class="form-group" style="margin: 8px 0px">
-				<label for="inputName">Valor da Ação: </label>
-				<input type="text "id="inputName" name="inputName" required class="form-control" />
-			</div>
-			<div>
-				<input type="submit" class="btn btn-success" value="Enviar" />
-			</div>
-		</form>
+		<div class="field" style="margin: 8px 0px">
+			<label for="inputName">Nome: </label>
+			<input type="text "id="inputName" class="inputName" required />
+		</div>
+		<div class="field" style="margin: 8px 0px">
+			<label for="inputName">CNPJ: </label>
+			<input type="text" id="inputCNPJ" class="inputCNPJ" required maxlength="14" /> 
+		</div>
+		<div class="field" style="margin: 8px 0px">
+			<label for="inputName">Número de Funcionários: </label>
+			<input type="text "id="numFuncionarios" class="numFuncionarios" required/>
+		</div>
+		<div class="field" style="margin: 8px 0px">
+			<label for="inputName">Data de Abertura: </label>
+			<input type="text "id="inputDate" class="inputDate" required maxlength="8"  />
+		</div>
+		<div class="field" style="margin: 8px 0px">
+			<label for="inputName">Valor da Ação: </label>
+			<input type="text "id="actionValue" class="actionValue" required />
+		</div>
+		<div>
+			<button id="submit" type="submit" value="submit">Enviar</button>
+		</div>
 		<table id="myTable" class="display nowrap" style="width:100%">
 			<thead>
 				<tr>
@@ -40,7 +38,7 @@
 		</table>
 	</body>
 
-	<button>Enviar Dados</button>
+	<button id ="sendData">Enviar Dados</button>
 	<button id="clearTable" class="clearTable">Limpar Tabela</button>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
