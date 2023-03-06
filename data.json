@@ -1,20 +1,20 @@
 {
   "companies": [
     {
-      "id": "1",
-      "name": "dsadsa",
-      "cnpj": "32132132132132",
-      "numFunc": "323",
-      "dataAbertura": "32232323",
-      "valorAcao": "3213,33"
+      "name": "Nome",
+      "cnpj": "11.111.111/0001-11",
+      "numFunc": "123",
+      "dataAbertura": "12/12/2012",
+      "valorAcao": "12.12",
+      "id": 1
     },
     {
-      "id": "2",
-      "name": "dsadsa",
-      "cnpj": "32132132132132",
-      "numFunc": "323",
-      "dataAbertura": "32232323",
-      "valorAcao": "3213,33"
+      "name": "Nome2",
+      "cnpj": "13.213.213/0001-23",
+      "numFunc": "321",
+      "dataAbertura": "31/12/2012",
+      "valorAcao": "21.21",
+      "id": 2
     }
   ]
 }

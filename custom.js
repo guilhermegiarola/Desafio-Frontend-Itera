@@ -265,17 +265,34 @@ $('#myTable').on('click', '.removeButton', function () {
 
 //Enviando os dados para o arquivo .JSON no servidor.
 $("button[id=sendData]").on('click', function () {
-	var jsonData = $('#myTable').DataTable().rows().data().toArray();
-	for (var iter = 0; iter < jsonData.length; iter++) {
-		//O objeto possuir um id é requisito para o funcionamento do JSON Server.
-		jsonData[iter] = {"id": `${iter + 1}`, ...jsonData[iter]}
-		//Removendo colunas inseridas em tempo de execução.
-		delete jsonData[iter]["null"];
-		$.ajax({
-			type: 'PUT',
-			url: `http://localhost:3000/companies/${iter + 1}`,
-			data: jsonData[iter],
-			dataType: "json",
+
+	var deleteCurrentJSON = $.getJSON("http://localhost:3000/companies", function (data) {
+		var items = [];
+		$.each(data, function (key, val) {
+			items.push(val);
+			$.ajax({
+				type: 'DELETE',
+				url: `http://localhost:3000/companies/${val["id"]}`,
+				data: val,
+				dataType: "json",
+			});
+		});
+	});
+
+	var tablesData = $('#myTable').DataTable().rows().data().toArray();
+	if (tablesData.length > 0) {
+		deleteCurrentJSON.done(function () {
+			for (var iter = 0; iter < tablesData.length; iter++) {
+				//Removendo colunas inseridas em tempo de execução.
+				delete tablesData[iter]["null"];
+				$.ajax({
+					type: 'POST',
+					async: false,
+					url: `http://localhost:3000/companies/`,
+					data: tablesData[iter],
+					dataType: "json",
+				});
+			}
 		});
 	}
 });
