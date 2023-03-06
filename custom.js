@@ -272,6 +272,7 @@ $("button[id=sendData]").on('click', function () {
 			items.push(val);
 			$.ajax({
 				type: 'DELETE',
+				async: false,
 				url: `http://localhost:3000/companies/${val["id"]}`,
 				data: val,
 				dataType: "json",
