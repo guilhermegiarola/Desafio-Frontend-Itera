@@ -1,20 +1,3 @@
 {
-  "companies": [
-    {
-      "name": "Nome",
-      "cnpj": "11.111.111/0001-11",
-      "numFunc": "123",
-      "dataAbertura": "12/12/2012",
-      "valorAcao": "12.12",
-      "id": "1"
-    },
-    {
-      "name": "Nome3",
-      "cnpj": "33.333.333/0001-33",
-      "numFunc": "33",
-      "dataAbertura": "31/10/2012",
-      "valorAcao": "10.00",
-      "id": "0UbeX_Q"
-    }
-  ]
+  "companies": []
 }

@@ -139,12 +139,6 @@ function validateLength(isFormValid) {
 	return isFormValid;
 }
 
-function addIdentifier(target) {
-	target.id = iterator;
-	iterator++;
-}
-
-//To start the JSON server, the command is json-server.cmd --watch data.json
 $(document).ready(function () {
 	setupFormValidationOnLoad();
 	$('#myTable thead tr').append('<th/>');
@@ -246,6 +240,7 @@ $("button[id=submit]").on('click', function () {
 	var isDateValid = true;
 	var isCnpjValid = true;
 
+	//Aplicação da validação na tentativa de enviar o formulário.
 	isLengthValid = validateLength(isLengthValid);
 	isValueValid = validateValue(isValueValid);
 	isDateValid = validateDate(isDateValid);
