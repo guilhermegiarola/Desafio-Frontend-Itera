@@ -13,12 +13,14 @@
 
 		<div class="field" style="margin: 8px 0px">
 			<label for="inputName">CNPJ: </label>
-			<input type="text" id="inputCNPJ" class="inputCNPJ" required maxlength="14" /> 
+			<input type="text" id="inputCNPJ" class="inputCNPJ" required maxlength="18" /> 
 		</div>
 		<h5 id="inputCnpjValidation" style="color: red; margin: 2px 0px;">
 			*O campo com CNPJ da empresa não pode estar vazio.
 		</h5>
-
+		<h5 id="invalidCnpj" style="color: red; margin: 2px 0px;">
+			*O CNPJ é inválido.
+		</h5>
 		<div class="field" style="margin: 8px 0px">
 			<label for="inputName">Número de Funcionários: </label>
 			<input type="text "id="numFuncionarios" class="numFuncionarios" required/>
@@ -29,10 +31,16 @@
 
 		<div class="field" style="margin: 8px 0px">
 			<label for="inputName">Data de Abertura: </label>
-			<input type="text "id="inputDate" class="inputDate" required maxlength="8"  />
+			<input type="text "id="inputDate" class="inputDate" maxlength="10"  />
 		</div>
 		<h5 id="inputDateValidation" style="color: red; margin: 2px 0px;">
 			*O campo com a data de abertura da empresa não pode estar vazio.
+		</h5>
+		<h5 id="dateFormatValidation" style="color: red; margin: 2px 0px;">
+			*A data está em formato inválido.
+		</h5>
+		<h5 id="dateMomentValidation" style="color: red; margin: 2px 0px;">
+			*A data escolhida, ou está no futuro, ou possui dia/mês/ano inválidos.
 		</h5>
 		
 		<div class="field" style="margin: 8px 0px">
@@ -41,6 +49,9 @@
 		</div>
 		<h5 id="inputActionValue" style="color: red; margin: 2px 0px;">
 			*O campo de valor da ação não pode estar vazio.
+		</h5>
+		<h5 id="inputActionFormat" style="color: red; margin: 2px 0px;">
+			*O valor da ação está em formato inválido.
 		</h5>
 
 		<div style="margin: 8px 0px">

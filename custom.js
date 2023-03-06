@@ -7,6 +7,18 @@ function formatCNPJ(value) {
 	return value;
 }
 
+//Função necessária para a formatação da data ao inserir no DataTable.
+function formatDate(value) {
+	let v = value.replace(/\D/g, '').slice(0, 10);
+	if (v.length >= 5) {
+		return `${v.slice(0, 2)}/${v.slice(2, 4)}/${v.slice(4)}`;
+	}
+	else if (v.length >= 3) {
+		return `${v.slice(0, 2)}/${v.slice(2)}`;
+	}
+	return v
+}
+
 function clearForm() {
 	$(".inputName").val("");
 	$(".inputCNPJ").val("");
@@ -19,18 +31,78 @@ function clearForm() {
 function setupFormValidationOnLoad() {
 	$("#inputNameValidation").hide();
 	$("#inputCnpjValidation").hide();
+	$("#invalidCnpj").hide();
 	$("#inputNumFuncionarios").hide();
 	$("#inputActionValue").hide();
 	$("#inputDateValidation").hide();
+	$("#inputActionFormat").hide();
+	$("#dateFormatValidation").hide();
+	$("#dateMomentValidation").hide();
 }
 
-function validateLength() {
+function validateCnpj(isFormValid) {
+	var cnpj = $(".inputCNPJ").val();
+	if ((cnpj.substring(11, 15) !== "0001" || cnpj.length != 18) && cnpj.length > 0) {
+		isFormValid = false;
+		$("#invalidCnpj").show();
+	} else {
+		$("#invalidCnpj").hide();
+	}
+	return isFormValid;
+}
+
+Date.prototype.isValid = function () {
+	return this.getTime() === this.getTime();
+};
+
+function validateDate(isFormValid) {
+	var data = $(".inputDate").val();
+	if (data.length < 10 && data.length != 0) {
+		isFormValid = false;
+		$("#dateFormatValidation").show();
+	} else {
+		$("#dateFormatValidation").hide();
+	}
+
+	var dateFormattingArray = data.split("/");
+	var now = new Date();
+	var dateInTheFuture = false;
+	console.log(dateFormattingArray[1], now.getMonth(), dateFormattingArray[2], now.getFullYear());
+
+	if (dateFormattingArray[2] > now.getFullYear()) {
+		dateInTheFuture = true;
+	} else if ((dateFormattingArray[1] > now.getMonth() && dateFormattingArray[2] == now.getFullYear()) || dateFormattingArray[1] > 12) {
+		dateInTheFuture = true;
+	} else if (!dateInTheFuture && dateFormattingArray[0] > now.getDate() && dateFormattingArray[0] > 31) {
+		dateInTheFuture = true;
+	}
+
+	if (isFormValid && data.length != 0 && dateInTheFuture) {
+		isFormValid = false;
+		$("#dateMomentValidation").show();
+	} else {
+		$("#dateMomentValidation").hide();
+	}
+	return isFormValid;
+}
+
+function validateValue(isFormValid) {
+	var valorAcao = $(".actionValue").val();
+	if (valorAcao.length != 0 && !valorAcao.match('^\[0-9]+(\.[0-9][0-9])?$')) {
+		isFormValid = false;
+		$("#inputActionFormat").show();
+	} else {
+		$("#inputActionFormat").hide();
+	}
+	return isFormValid;
+}
+
+function validateLength(isFormValid) {
 	var name = $(".inputName").val();
 	var cnpj = $(".inputCNPJ").val();
 	var numFuncionarios = $(".numFuncionarios").val();
 	var dataAbertura = $(".inputDate").val();
 	var valorAcao = $(".actionValue").val();
-	var isFormValid = true;
 	if (name.length == 0) {
 		$("#inputNameValidation").show();
 		isFormValid = false;
@@ -65,18 +137,6 @@ function validateLength() {
 		$("#inputActionValue").hide();
 	}
 	return isFormValid;
-}
-
-//Função necessária para a formatação da data ao inserir no DataTable.
-function formatDate(value) {
-	let v = value.replace(/\D/g, '').slice(0, 10);
-	if (v.length >= 5) {
-		return `${v.slice(0, 2)}/${v.slice(2, 4)}/${v.slice(4)}`;
-	}
-	else if (v.length >= 3) {
-		return `${v.slice(0, 2)}/${v.slice(2)}`;
-	}
-	return v
 }
 
 function addIdentifier(target) {
@@ -133,69 +193,89 @@ $(document).ready(function () {
 	});
 });
 
-//Funções de utilidade para os botões da página.
+//Funções de utilidade para os campos e botões da página.
 $(function () {
 	//Limitando o campo de inserção do CNPJ a aceitar somente números.
-	$("input[id='inputCNPJ']").on('input', function (e) {
+	$("input[id='inputCNPJ']").on('input', function () {
 		$(this).val($(this).val().replace(/[^0-9]/g, ''));
+		$(this).val(formatCNPJ($(this).val()));
+	});
+
+	//Limitando o campo de inserção do CNPJ a aceitar somente números.
+	$("input[id='inputDate']").on('input', function () {
+		$(this).val($(this).val().replace(/[^0-9]/g, ''));
+		$(this).val(formatDate($(this).val()));
 	});
 
 	//Limitando o campo de inserção do número de funcionários a aceitar somente números.
-	$("input[id='numFuncionarios']").on('input', function (e) {
+	$("input[id='numFuncionarios']").on('input', function () {
 		$(this).val($(this).val().replace(/[^0-9]/g, ''));
 	});
 
-	//Limpando a tabela ao clicar no botão "Limpar Tabela"
-	$("button[id='clearTable']").on('click', function () {
-		var table = $('#myTable').DataTable();
-		table.clear().draw();
+	//Limitando o campo de inserção do valor da ação a aceitar números e decimais.
+	$("input[id='actionValue']").on('input', function () {
+		$(this).val($(this).val().replace(/[^0-9.]/g, ''));
 	});
+});
 
-	//Adicionando e populando uma nova linha ao enviar o formulário.
-	$("button[id=submit]").on('click', function () {
-		var nome = $(".inputName").val();
-		var cnpj = $(".inputCNPJ").val();
-		var numFuncionarios = $(".numFuncionarios").val();
-		var dataAbertura = $(".inputDate").val();
-		var valorAcao = $(".actionValue").val();
-		var table = $('#myTable').DataTable();
-		var data = {
-			"name": nome,
-			"cnpj": cnpj,
-			"numFunc": numFuncionarios,
-			"dataAbertura": dataAbertura,
-			"valorAcao": valorAcao,
-			null: '<button class="removeButton">Remover</button>',
-		}
-		var isFormValid = true;
-		isFormValid = validateLength();
 
-		if (isFormValid) {
-			clearForm();
-			table.row.add(data).draw(false);
-		}
-	});
+//Limpando a tabela ao clicar no botão "Limpar Tabela"
+$("button[id='clearTable']").on('click', function () {
+	var table = $('#myTable').DataTable();
+	table.clear().draw();
+});
 
-	//Removendo linha da tabela ao clicar no botão.
-	$('#myTable').on('click', '.removeButton', function () {
-		var table = $('#myTable').DataTable();
-		table.row($(this).parents('tr')).remove().draw();
-	});
+//Adicionando e populando uma nova linha ao enviar o formulário.
+$("button[id=submit]").on('click', function () {
+	var nome = $(".inputName").val();
+	var cnpj = $(".inputCNPJ").val();
+	var numFuncionarios = $(".numFuncionarios").val();
+	var dataAbertura = $(".inputDate").val();
+	var valorAcao = $(".actionValue").val();
+	var table = $('#myTable').DataTable();
+	var data = {
+		"name": nome,
+		"cnpj": cnpj,
+		"numFunc": numFuncionarios,
+		"dataAbertura": dataAbertura,
+		"valorAcao": valorAcao,
+		null: '<button class="removeButton">Remover</button>',
+	}
+	var isLengthValid = true;
+	var isValueValid = true;
+	var isDateValid = true;
+	var isCnpjValid = true;
 
-	//Enviando os dados para o arquivo .JSON no servidor.
-	$("button[id=sendData]").on('click', function () {
-		var jsonData = $('#myTable').DataTable().rows().data().toArray();
-		for (var iter = 0; iter < jsonData.length; iter++) {
-			//O objeto possuir um id é requisito para o funcionamento do JSON Server.
-			jsonData[iter] = {"id": `${iter + 1}`, ...jsonData[iter]}
-			//Removendo colunas inseridas em tempo de execução.
-			delete jsonData[iter]["null"];
-			$.ajax({
-				type: 'PUT',
-				url: `http://localhost:3000/companies/${iter + 1}`,
-				data: jsonData[iter],
-				dataType: "json",
-			});
-		}
-	});
-})
+	isLengthValid = validateLength(isLengthValid);
+	isValueValid = validateValue(isValueValid);
+	isDateValid = validateDate(isDateValid);
+	isCnpjValid = validateCnpj(isCnpjValid);
+
+	if (isCnpjValid && isLengthValid && isDateValid && isValueValid) {
+		clearForm();
+		table.row.add(data).draw(false);
+	}
+});
+
+//Removendo linha da tabela ao clicar no botão.
+$('#myTable').on('click', '.removeButton', function () {
+	var table = $('#myTable').DataTable();
+	table.row($(this).parents('tr')).remove().draw();
+});
+
+//Enviando os dados para o arquivo .JSON no servidor.
+$("button[id=sendData]").on('click', function () {
+	var jsonData = $('#myTable').DataTable().rows().data().toArray();
+	for (var iter = 0; iter < jsonData.length; iter++) {
+		//O objeto possuir um id é requisito para o funcionamento do JSON Server.
+		jsonData[iter] = {"id": `${iter + 1}`, ...jsonData[iter]}
+		//Removendo colunas inseridas em tempo de execução.
+		delete jsonData[iter]["null"];
+		$.ajax({
+			type: 'PUT',
+			url: `http://localhost:3000/companies/${iter + 1}`,
+			data: jsonData[iter],
+			dataType: "json",
+		});
+	}
+});
