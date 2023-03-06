@@ -1,3 +1,4 @@
+//Função necessária para a formatação do CNPJ ao inserir no DataTable.
 function formatCNPJ(value) {
 	value = value.replace(/^(\d{2})(\d)/, "$1.$2");
 	value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
@@ -6,6 +7,67 @@ function formatCNPJ(value) {
 	return value;
 }
 
+function clearForm() {
+	$(".inputName").val("");
+	$(".inputCNPJ").val("");
+	$(".numFuncionarios").val("");
+	$(".inputDate").val("");
+	$(".actionValue").val("");
+}
+
+//Esta função esconde todos os elementos de validação assim que a página carrega.
+function setupFormValidationOnLoad() {
+	$("#inputNameValidation").hide();
+	$("#inputCnpjValidation").hide();
+	$("#inputNumFuncionarios").hide();
+	$("#inputActionValue").hide();
+	$("#inputDateValidation").hide();
+}
+
+function validateLength() {
+	var name = $(".inputName").val();
+	var cnpj = $(".inputCNPJ").val();
+	var numFuncionarios = $(".numFuncionarios").val();
+	var dataAbertura = $(".inputDate").val();
+	var valorAcao = $(".actionValue").val();
+	var isFormValid = true;
+	if (name.length == 0) {
+		$("#inputNameValidation").show();
+		isFormValid = false;
+	} else {
+		$("#inputNameValidation").hide();
+	}
+	if (cnpj.length == 0) {
+		$("#inputCnpjValidation").show();
+		isFormValid = false;
+	} else {
+		$("#inputCnpjValidation").hide();
+	}
+
+	if (dataAbertura.length == 0) {
+		$("#inputDateValidation").show();
+		isFormValid = false;
+	} else {
+		$("#inputDateValidation").hide();
+	}
+
+	if (numFuncionarios.length == 0) {
+		$("#inputNumFuncionarios").show();
+		isFormValid = false;
+	} else {
+		$("#inputNumFuncionarios").hide();
+	}
+
+	if (valorAcao.length == 0) {
+		$("#inputActionValue").show();
+		isFormValid = false;
+	} else {
+		$("#inputActionValue").hide();
+	}
+	return isFormValid;
+}
+
+//Função necessária para a formatação da data ao inserir no DataTable.
 function formatDate(value) {
 	let v = value.replace(/\D/g, '').slice(0, 10);
 	if (v.length >= 5) {
@@ -24,6 +86,7 @@ function addIdentifier(target) {
 
 //To start the JSON server, the command is json-server.cmd --watch data.json
 $(document).ready(function () {
+	setupFormValidationOnLoad();
 	$('#myTable thead tr').append('<th/>');
 	$('#myTable').DataTable({
 		"processing": true,
@@ -73,11 +136,12 @@ $(document).ready(function () {
 //Funções de utilidade para os botões da página.
 $(function () {
 	//Limitando o campo de inserção do CNPJ a aceitar somente números.
-	$("input[name='inputCNPJ']").on('input', function (e) {
+	$("input[id='inputCNPJ']").on('input', function (e) {
 		$(this).val($(this).val().replace(/[^0-9]/g, ''));
 	});
+
 	//Limitando o campo de inserção do número de funcionários a aceitar somente números.
-	$("input[name='numFuncionarios']").on('input', function (e) {
+	$("input[id='numFuncionarios']").on('input', function (e) {
 		$(this).val($(this).val().replace(/[^0-9]/g, ''));
 	});
 
@@ -103,23 +167,26 @@ $(function () {
 			"valorAcao": valorAcao,
 			null: '<button class="removeButton">Remover</button>',
 		}
-		table.row.add(data).draw(false);
+		var isFormValid = true;
+		isFormValid = validateLength();
+
+		if (isFormValid) {
+			clearForm();
+			table.row.add(data).draw(false);
+		}
 	});
 
 	//Removendo linha da tabela ao clicar no botão.
 	$('#myTable').on('click', '.removeButton', function () {
 		var table = $('#myTable').DataTable();
 		table.row($(this).parents('tr')).remove().draw();
-		// $.ajax({
-		// 	type: 'DELETE',
-		// 	url: `http://localhost:3000/companies/${a}`,
 	});
 
 	//Enviando os dados para o arquivo .JSON no servidor.
 	$("button[id=sendData]").on('click', function () {
 		var jsonData = $('#myTable').DataTable().rows().data().toArray();
 		for (var iter = 0; iter < jsonData.length; iter++) {
-			//Requisito para o funcionamento do JSON Server.
+			//O objeto possuir um id é requisito para o funcionamento do JSON Server.
 			jsonData[iter] = {"id": `${iter + 1}`, ...jsonData[iter]}
 			//Removendo colunas inseridas em tempo de execução.
 			delete jsonData[iter]["null"];

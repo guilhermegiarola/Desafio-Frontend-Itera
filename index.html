@@ -2,29 +2,51 @@
 <html>
 	<body>
 		<div id="titleAdd" style="font-weight: 700">Adicionar nova Empresa</div><br/>
+		
 		<div class="field" style="margin: 8px 0px">
 			<label for="inputName">Nome: </label>
-			<input type="text "id="inputName" class="inputName" required />
+			<input type="text "id="inputName" class="inputName" />
 		</div>
+		<h5 id="inputNameValidation" style="color: red; margin: 2px 0px;">
+			*O campo com nome da empresa não pode estar vazio.
+		</h5>
+
 		<div class="field" style="margin: 8px 0px">
 			<label for="inputName">CNPJ: </label>
 			<input type="text" id="inputCNPJ" class="inputCNPJ" required maxlength="14" /> 
 		</div>
+		<h5 id="inputCnpjValidation" style="color: red; margin: 2px 0px;">
+			*O campo com CNPJ da empresa não pode estar vazio.
+		</h5>
+
 		<div class="field" style="margin: 8px 0px">
 			<label for="inputName">Número de Funcionários: </label>
 			<input type="text "id="numFuncionarios" class="numFuncionarios" required/>
 		</div>
+			<h5 id="inputNumFuncionarios" style="color: red; margin: 2px 0px;">
+			*O campo de número de funcionários não pode estar vazio.
+		</h5>
+
 		<div class="field" style="margin: 8px 0px">
 			<label for="inputName">Data de Abertura: </label>
 			<input type="text "id="inputDate" class="inputDate" required maxlength="8"  />
 		</div>
+		<h5 id="inputDateValidation" style="color: red; margin: 2px 0px;">
+			*O campo com a data de abertura da empresa não pode estar vazio.
+		</h5>
+		
 		<div class="field" style="margin: 8px 0px">
 			<label for="inputName">Valor da Ação: </label>
 			<input type="text "id="actionValue" class="actionValue" required />
 		</div>
-		<div>
+		<h5 id="inputActionValue" style="color: red; margin: 2px 0px;">
+			*O campo de valor da ação não pode estar vazio.
+		</h5>
+
+		<div style="margin: 8px 0px">
 			<button id="submit" type="submit" value="submit">Enviar</button>
 		</div>
+
 		<table id="myTable" class="display nowrap" style="width:100%">
 			<thead>
 				<tr>
